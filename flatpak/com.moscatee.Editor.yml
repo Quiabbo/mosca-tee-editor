@@ -30,7 +30,7 @@ modules:
       - type: git
         url: https://github.com/Quiabbo/mosca-tee-editor.git
         branch: main
-        commit: b59508e4704a123489a76431855c4e28880635d8
+        commit: bfbed92c98b95b0254693115828dbd1c24893713
     build-commands:
       - npm ci
       - npm run build
