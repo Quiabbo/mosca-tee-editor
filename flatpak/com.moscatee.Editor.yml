@@ -28,9 +28,9 @@ modules:
       append-path: /usr/lib/sdk/nodejs20/bin
     sources:
       - type: git
-        url: https://github.com/Quiabbo/com.moscatee.Editor.git
+        url: https://github.com/Quiabbo/mosca-tee-editor.git
         branch: main
-        commit: SUBSTITUIR_PELO_HASH_DO_COMMIT
+        commit: b59508e4704a123489a76431855c4e28880635d8
     build-commands:
       - npm ci
       - npm run build

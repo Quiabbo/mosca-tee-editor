@@ -2,19 +2,33 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+# Mosca Tee — Editor de Design Online
 
-This contains everything you need to run your app locally.
+Mosca Tee é um editor de imagens e design online criado por Filipi Hadji. Este repositório contém o código-fonte do editor, scripts de build e empacotamento (incluindo configuração Flatpak), e os ativos usados pela aplicação.
 
-View your app in AI Studio: https://ai.studio/apps/c8118ed2-2759-4a3a-9877-c29c2b6590b1
+Resumo do projeto (veja também a página Sobre do site):
+- Editor baseado em web com ferramentas de desenho (pincel, seleção, formas, texto, camadas).
+- Painéis de biblioteca e camadas, filtros e ajustes, e recursos de acessibilidade para melhor leitura e contraste.
+- Destinado a criar e exportar designs e mockups rápidos diretamente no navegador.
 
-## Run Locally
+## Autor
 
-**Prerequisites:**  Node.js
+Filipi Hadji
 
+## Rodar localmente
 
-1. Install dependencies:
+**Pré-requisitos:** Node.js
+
+1. Instalar dependências:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
+2. Configurar variáveis de ambiente (veja `.env`):
+   - Ajuste as chaves necessárias caso utilize APIs externas.
+3. Executar em modo de desenvolvimento:
    `npm run dev`
+
+## Empacotamento
+
+O diretório `flatpak/` contém o manifesto usado para criar o pacote Flatpak. Antes de enviar ao Flathub, atualize o campo `commit` em `flatpak/com.moscatee.Editor.yml` para o hash exato do commit que deseja publicar (o arquivo foi atualizado para apontar para este repositório e o commit atual).
+
+---
+Se quiser que eu reformule ou adicione mais detalhes (ex.: screenshots, instruções de release, badge de licença), diga o que prefere.
