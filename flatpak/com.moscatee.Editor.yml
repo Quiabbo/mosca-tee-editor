@@ -2,49 +2,58 @@ app-id: com.moscatee.Editor
 runtime: org.freedesktop.Platform
 runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '24.08'
 sdk-extensions:
-  - org.freedesktop.Sdk.Extension.nodejs20
+  - org.freedesktop.Sdk.Extension.node20
 
 command: moscatee
 
+separate-locales: false
+
 finish-args:
   - --share=ipc
+  - --share=network
   - --socket=wayland
-  - --socket=x11
+  - --socket=fallback-x11
   - --device=dri
   - --socket=pulseaudio
-  - --filesystem=home
-  - --share=network
+  - --filesystem=xdg-documents
+  - --filesystem=xdg-pictures
+  - --filesystem=xdg-download
+  - --talk-name=org.freedesktop.Notifications
+
+build-options:
+  append-path: /usr/lib/sdk/node20/bin
+  env:
+    npm_config_nodedir: /usr/lib/sdk/node20
+    npm_config_offline: 'true'
+    npm_config_cache: /run/build/moscatee/flatpak-node/npm-cache
+    XDG_CACHE_HOME: /run/build/moscatee/flatpak-node/cache
+    ELECTRON_CACHE: /run/build/moscatee/flatpak-node/cache/electron-cache
 
 modules:
-  - name: nodejs
-    buildsystem: simple
-    build-commands:
-      - /usr/lib/sdk/nodejs20/install.sh
-
   - name: moscatee
     buildsystem: simple
-    build-options:
-      append-path: /usr/lib/sdk/nodejs20/bin
     sources:
       - type: git
         url: https://github.com/Quiabbo/mosca-tee-editor.git
-        branch: main
-        commit: bfbed92c98b95b0254693115828dbd1c24893713
+        tag: v0.0.2
+        dest: src
+      - generated-sources.json
+      - type: script
+        dest-filename: moscatee.sh
+        commands:
+          - exec zypak-wrapper.sh /app/main/node_modules/electron/dist/electron /app/main/main.js "$@"
     build-commands:
-      - npm ci
-      - npm run build
-      - npm exec -- electron-builder --dir --linux
-      - mkdir -p /app/share/moscatee
-      - cp -r dist/linux-unpacked/* /app/share/moscatee/
-      - mkdir -p /app/bin
-      - ln -s /app/share/moscatee/react-example /app/bin/moscatee
-      - mkdir -p /app/share/applications
-      - cp flatpak/com.moscatee.Editor.desktop /app/share/applications/
-      - mkdir -p /app/share/metainfo
-      - cp flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/
-      - mkdir -p /app/share/icons/hicolor/{48x48,128x128,256x256,512x512}/apps
-      - cp flatpak/icons/com.moscatee.Editor-48x48.png /app/share/icons/hicolor/48x48/apps/com.moscatee.Editor.png
-      - cp flatpak/icons/com.moscatee.Editor-128x128.png /app/share/icons/hicolor/128x128/apps/com.moscatee.Editor.png
-      - cp flatpak/icons/com.moscatee.Editor-256x256.png /app/share/icons/hicolor/256x256/apps/com.moscatee.Editor.png
-      - cp flatpak/icons/com.moscatee.Editor-512x512.png /app/share/icons/hicolor/512x512/apps/com.moscatee.Editor.png
+      - cd src && npm ci --offline
+      - cd src && npm run build
+      - mkdir -p /app/main
+      - cp -a src/dist src/main.js src/preload.js src/package.json src/node_modules /app/main/
+      - install -Dm755 moscatee.sh /app/bin/moscatee
+      - install -Dm644 src/flatpak/com.moscatee.Editor.desktop /app/share/applications/com.moscatee.Editor.desktop
+      - install -Dm644 src/flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/com.moscatee.Editor.metainfo.xml
+      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-48x48.png /app/share/icons/hicolor/48x48/apps/com.moscatee.Editor.png
+      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-128x128.png /app/share/icons/hicolor/128x128/apps/com.moscatee.Editor.png
+      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-256x256.png /app/share/icons/hicolor/256x256/apps/com.moscatee.Editor.png
+      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-512x512.png /app/share/icons/hicolor/512x512/apps/com.moscatee.Editor.png

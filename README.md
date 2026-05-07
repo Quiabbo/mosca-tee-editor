@@ -1,89 +1,61 @@
+# Mosca Tee — Editor de Design Profissional e Inclusivo
 
-# Mosca Tee — Editor de Design Online
+Mosca Tee é um editor gráfico de alto desempenho focado em privacidade, agilidade e inclusão. Foi planejado para ser uma alternativa robusta e gratuita a ferramentas proprietárias e tem como diferencial ser desenhado também para uso por pessoas cegas ou com baixa visão.
 
-Mosca Tee é um editor de imagens e design online criado por Filipi Hadji. Este repositório contém o código-fonte do editor, scripts de build e empacotamento (incluindo configuração Flatpak), e os ativos usados pela aplicação.
+Esta versão foi adaptada para rodar como aplicação desktop via Electron e empacotada como Flatpak para distribuição via Flathub.
 
-Resumo do projeto (veja também a página Sobre do site):
+## Recursos principais
+
+- Privacidade total: processamento 100% local
+- Modo de acessibilidade nativo para pessoas cegas e com baixa visão
+- Suporte avançado a PSD (camadas, textos, grupos)
+- Remoção de fundo via IA e vetorizador (SVG) integrados
+- Sem anúncios, sem login
+- Mais de 275.000 ícones e integração com Google Fonts
 
 ## Autor
 
-Filipi Hadji
+Idealizado e desenvolvido por **Filipi Hadji**.
 
-## Rodar localmente
+## Rodar localmente (web/dev)
 
-**Pré-requisitos:** Node.js
-
-1. Instalar dependências:
-   `npm install`
-2. Configurar variáveis de ambiente (veja `.env`):
-   - Ajuste as chaves necessárias caso utilize APIs externas.
-3. Executar em modo de desenvolvimento:
-   `npm run dev`
-
-## Empacotamento
-
-O diretório `flatpak/` contém o manifesto usado para criar o pacote Flatpak. Antes de enviar ao Flathub, atualize o campo `commit` em `flatpak/com.moscatee.Editor.yml` para o hash exato do commit que deseja publicar (o arquivo foi atualizado para apontar para este repositório e o commit atual).
-
-Mosca Tee — Editor de Design Profissional e Inclusivo
-===============================================
-
-O Mosca Tee é um editor gráfico de alto desempenho, focado em privacidade, agilidade e, acima de tudo, inclusão. Desenvolvido para ser uma alternativa robusta e gratuita a ferramentas proprietárias, ele se destaca por ser o primeiro editor do mundo planejado para ser utilizado também por pessoas cegas ou com baixa visão.
-
-Esta versão foi adaptada para rodar como uma aplicação desktop via Electron, permitindo a distribuição nativa para sistemas Linux através da Flathub.
-
-🚀 Principais Recursos
-----------------------
-- Privacidade Total: Processamento 100% local. Suas artes e arquivos nunca saem do seu computador.
-- Inclusão Radical: Primeiro editor gráfico com modo de acessibilidade nativo para pessoas cegas e com baixa visão.
-- Suporte Avançado a PSD: Abra e edite arquivos do Photoshop preservando camadas, textos e grupos.
-- Ferramentas Inteligentes: Remoção de fundo via IA e vetorizador de imagens (SVG) integrados.
-- Sem Barreiras: 100% gratuito, sem anúncios e sem necessidade de login ou cadastro.
-- Vastos Recursos: Acesso a mais de 275.000 ícones e integração com Google Fonts.
-
-✍️ Autor
--------
-Idealizado e desenvolvido por Filipi Hadji.
-
-O projeto nasceu com a missão de democratizar o acesso a ferramentas de design profissional no Brasil e no mundo.
-
-🛠️ Como rodar localmente
------------------------
-Pré-requisitos
-
-Node.js (recomendado v18 ou superior)
-
-Instalação
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/seu-usuario/mosca-tee.git
-cd mosca-tee
-```
-
-Instale as dependências:
+Pré-requisitos: Node.js 20+.
 
 ```bash
 npm install
-```
-
-Desenvolvimento
-
-Inicie o servidor de desenvolvimento:
-
-```bash
 npm run dev
 ```
 
-📦 Empacotamento Flatpak
-------------------------
-O projeto está estruturado para ser distribuído no Flathub. Os manifestos e configurações específicas encontram-se no diretório `/flatpak`.
+## Rodar como app Electron
 
-Para compilar e testar o Flatpak localmente:
+```bash
+# Em um terminal:
+npm run dev
+# Em outro terminal:
+npm run electron
+```
 
-- Certifique-se de ter o `flatpak-builder` instalado.
-- Siga as instruções no arquivo `ELECTRON_FLATPAK_SETUP.md` para gerar o bundle final.
+## Empacotamento Flatpak / Flathub
 
-📄 Licença
----------
-Este projeto está sob a licença MIT.
+O diretório [`flatpak/`](flatpak/) contém o manifesto, metainfo, ícones e arquivo `.desktop` usados pela build do Flathub.
+
+Para submeter ao Flathub você precisa de um arquivo `generated-sources.json` que pré-baixa todas as dependências npm (o sandbox do Flathub não tem rede). Ele é gerado a partir do `package-lock.json`:
+
+```bash
+./scripts/gen-flatpak-sources.sh
+```
+
+O script roda dentro de um container Docker, então funciona em macOS, Windows e Linux.
+
+Em seguida, o `generated-sources.json` resultante é colocado **junto com o manifesto** dentro da PR no repositório do Flathub (não dentro deste repo).
+
+Build local em uma máquina Linux (opcional, para testar antes de submeter):
+
+```bash
+flatpak-builder --user --install --force-clean build-dir flatpak/com.moscatee.Editor.yml
+flatpak run com.moscatee.Editor
+```
+
+## Licença
+
+Este projeto está sob a licença **GPL-3.0-or-later**. Veja [LICENSE](LICENSE).
