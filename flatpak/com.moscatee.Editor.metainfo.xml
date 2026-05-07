@@ -33,20 +33,20 @@
   </description>
   
   <url type="homepage">https://moscatee.com</url>
-  <url type="bugtracker">https://github.com/Quiabbo/com.moscatee.Editor/issues</url>
-  <url type="help">https://github.com/Quiabbo/com.moscatee.Editor</url>
+  <url type="bugtracker">https://github.com/Quiabbo/mosca-tee-editor/issues</url>
+  <url type="help">https://github.com/Quiabbo/mosca-tee-editor</url>
   
   <categories>
     <category>Graphics</category>
   </categories>
   
-  <icon type="remote">https://raw.githubusercontent.com/Quiabbo/com.moscatee.Editor/main/public/icon-512x512.png</icon>
+  <icon type="remote">https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/main/public/icon-512x512.png</icon>
   
   <screenshots>
     <screenshot type="default">
       <caption>Main editor interface</caption>
       <caption xml:lang="pt_BR">Interface principal do editor</caption>
-      <image>https://raw.githubusercontent.com/Quiabbo/com.moscatee.Editor/main/public/icon-512x512.png</image>
+      <image>https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/main/public/icon-512x512.png</image>
     </screenshot>
   </screenshots>
   
