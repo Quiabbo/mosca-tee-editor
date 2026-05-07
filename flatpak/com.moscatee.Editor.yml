@@ -1,0 +1,50 @@
+app-id: com.moscatee.Editor
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.nodejs20
+
+command: moscatee
+
+finish-args:
+  - --share=ipc
+  - --socket=wayland
+  - --socket=x11
+  - --device=dri
+  - --socket=pulseaudio
+  - --filesystem=home
+  - --share=network
+
+modules:
+  - name: nodejs
+    buildsystem: simple
+    build-commands:
+      - /usr/lib/sdk/nodejs20/install.sh
+
+  - name: moscatee
+    buildsystem: simple
+    build-options:
+      append-path: /usr/lib/sdk/nodejs20/bin
+    sources:
+      - type: git
+        url: https://github.com/Quiabbo/com.moscatee.Editor.git
+        branch: main
+        commit: SUBSTITUIR_PELO_HASH_DO_COMMIT
+    build-commands:
+      - npm ci
+      - npm run build
+      - npm exec -- electron-builder --dir --linux
+      - mkdir -p /app/share/moscatee
+      - cp -r dist/linux-unpacked/* /app/share/moscatee/
+      - mkdir -p /app/bin
+      - ln -s /app/share/moscatee/react-example /app/bin/moscatee
+      - mkdir -p /app/share/applications
+      - cp flatpak/com.moscatee.Editor.desktop /app/share/applications/
+      - mkdir -p /app/share/metainfo
+      - cp flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/
+      - mkdir -p /app/share/icons/hicolor/{48x48,128x128,256x256,512x512}/apps
+      - cp flatpak/icons/com.moscatee.Editor-48x48.png /app/share/icons/hicolor/48x48/apps/com.moscatee.Editor.png
+      - cp flatpak/icons/com.moscatee.Editor-128x128.png /app/share/icons/hicolor/128x128/apps/com.moscatee.Editor.png
+      - cp flatpak/icons/com.moscatee.Editor-256x256.png /app/share/icons/hicolor/256x256/apps/com.moscatee.Editor.png
+      - cp flatpak/icons/com.moscatee.Editor-512x512.png /app/share/icons/hicolor/512x512/apps/com.moscatee.Editor.png

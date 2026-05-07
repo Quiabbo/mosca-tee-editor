@@ -1,0 +1,21 @@
+{
+  "appId": "com.moscatee.Editor",
+  "productName": "Mosca Tee",
+  "directories": {
+    "buildResources": "public",
+    "output": "dist"
+  },
+  "files": [
+    "dist/**/*",
+    "main.js",
+    "preload.js",
+    "package.json"
+  ],
+  "linux": {
+    "target": [
+      "dir"
+    ],
+    "icon": "public/icon-512x512.png",
+    "category": "Graphics"
+  }
+}

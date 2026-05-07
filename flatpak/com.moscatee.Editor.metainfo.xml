@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.moscatee.Editor</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0+</project_license>
+  <name>Mosca Tee</name>
+  <name xml:lang="pt_BR">Mosca Tee</name>
+  <summary>Free online design editor for t-shirts and apparel</summary>
+  <summary xml:lang="pt_BR">Editor de design online gratuito para camisetas e vestuário</summary>
+  
+  <description>
+    <p>Mosca Tee is a free, open-source design editor specifically built for creating custom t-shirt and apparel designs. With a comprehensive suite of creative tools including brushes, shapes, text, and advanced effects, you can design professional-looking products right from your desktop.</p>
+    <p xml:lang="pt_BR">Mosca Tee é um editor de design gratuito e de código aberto especialmente construído para criar designs personalizados de camisetas e vestuário. Com um conjunto abrangente de ferramentas criativas, incluindo pincéis, formas, texto e efeitos avançados, você pode projetar produtos com aparência profissional diretamente do seu desktop.</p>
+    
+    <p>Features:</p>
+    <p xml:lang="pt_BR">Recursos:</p>
+    <ul>
+      <li>Advanced drawing tools including brushes and pens</li>
+      <li xml:lang="pt_BR">Ferramentas avançadas de desenho, incluindo pincéis e canetas</li>
+      <li>Shape and layer management</li>
+      <li xml:lang="pt_BR">Gerenciamento de formas e camadas</li>
+      <li>Professional text editor with custom fonts</li>
+      <li xml:lang="pt_BR">Editor de texto profissional com fontes personalizadas</li>
+      <li>Color picker and blend modes</li>
+      <li xml:lang="pt_BR">Seletor de cores e modos de mesclagem</li>
+      <li>Image filters and effects</li>
+      <li xml:lang="pt_BR">Filtros e efeitos de imagem</li>
+      <li>Multi-language support</li>
+      <li xml:lang="pt_BR">Suporte multi-idioma</li>
+      <li>Export to multiple formats</li>
+      <li xml:lang="pt_BR">Exportação para múltiplos formatos</li>
+    </ul>
+  </description>
+  
+  <url type="homepage">https://moscatee.com</url>
+  <url type="bugtracker">https://github.com/Quiabbo/com.moscatee.Editor/issues</url>
+  <url type="help">https://github.com/Quiabbo/com.moscatee.Editor</url>
+  
+  <categories>
+    <category>Graphics</category>
+  </categories>
+  
+  <icon type="remote">https://raw.githubusercontent.com/Quiabbo/com.moscatee.Editor/main/public/icon-512x512.png</icon>
+  
+  <screenshots>
+    <screenshot type="default">
+      <caption>Main editor interface</caption>
+      <caption xml:lang="pt_BR">Interface principal do editor</caption>
+      <image>https://raw.githubusercontent.com/Quiabbo/com.moscatee.Editor/main/public/icon-512x512.png</image>
+    </screenshot>
+  </screenshots>
+  
+  <releases>
+    <release version="0.0.1" date="2026-05-07">
+      <description>
+        <p>Initial release of Mosca Tee for Flathub</p>
+        <p xml:lang="pt_BR">Lançamento inicial do Mosca Tee para Flathub</p>
+      </description>
+    </release>
+  </releases>
+  
+  <content_rating type="oars-1.0"/>
+</component>

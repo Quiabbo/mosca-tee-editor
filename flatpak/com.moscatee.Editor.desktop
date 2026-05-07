@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Mosca Tee
+Comment=Free online design editor for t-shirts and apparel
+Comment[pt_BR]=Editor de design online gratuito para camisetas e vestuário
+Icon=com.moscatee.Editor
+Exec=moscatee
+Categories=Graphics;
+Terminal=false
+StartupNotify=true
+Keywords=design;graphics;tee;shirt;editor;
