@@ -58,4 +58,4 @@ flatpak run com.moscatee.Editor
 
 ## Licença
 
-Este projeto está sob a licença **GPL-3.0-or-later**. Veja [LICENSE](LICENSE).
+Este projeto está sob a licença **AGPL-3.0-or-later**. Veja [LICENSE](LICENSE).
