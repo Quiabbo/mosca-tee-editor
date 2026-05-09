@@ -2,6 +2,11 @@ const { app, BrowserWindow, Menu, screen, shell } = require('electron');
 const path = require('path');
 const isDev = process.env.ELECTRON_IS_DEV === '1';
 
+// Hide the native application menu (File / Edit / View). The Mosca Tee
+// renderer already has its own toolbar, so the Electron menu just adds
+// a redundant white bar above it.
+Menu.setApplicationMenu(null);
+
 let mainWindow;
 
 function createWindow() {
@@ -15,6 +20,7 @@ function createWindow() {
     minWidth: 800,
     minHeight: 600,
     center: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
@@ -59,41 +65,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// Create menu
-const template = [
-  {
-    label: 'File',
-    submenu: [
-      {
-        label: 'Exit',
-        accelerator: 'CmdOrCtrl+Q',
-        click: () => {
-          app.quit();
-        }
-      }
-    ]
-  },
-  {
-    label: 'Edit',
-    submenu: [
-      { role: 'undo' },
-      { role: 'redo' },
-      { type: 'separator' },
-      { role: 'cut' },
-      { role: 'copy' },
-      { role: 'paste' }
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      { role: 'reload' },
-      { role: 'forceReload' },
-      { role: 'toggleDevTools' }
-    ]
-  }
-];
-
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
