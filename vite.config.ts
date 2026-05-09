@@ -6,11 +6,12 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  const isElectronBuild = process.env.ELECTRON_BUILD === '1';
   return {
     plugins: [
-      react(), 
+      react(),
       tailwindcss(),
-      VitePWA({
+      ...(isElectronBuild ? [] : [VitePWA({
         registerType: 'autoUpdate',
         injectRegister: 'auto',
         devOptions: {
@@ -46,7 +47,7 @@ export default defineConfig(({mode}) => {
             }
           ]
         }
-      })
+      })])
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || ""),
