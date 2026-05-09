@@ -51,8 +51,8 @@ export default defineConfig(({mode}) => {
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || ""),
-      'process.env.VITE_PEXELS_KEY': JSON.stringify(env.VITE_PEXELS_KEY || "oreK4dS7wTmpuZCIvefYTB4QC81zCck7cpfDXFC2xWp9q59VzWq5NI40"),
-      'process.env.VITE_GOOGLE_FONTS_KEY': JSON.stringify(env.VITE_GOOGLE_FONTS_KEY || "AIzaSyAukN8IErDWJ-2RVC2hvCSFrxh-DxYkIOs"),
+      'process.env.VITE_PEXELS_KEY': JSON.stringify(env.VITE_PEXELS_KEY || ""),
+      'process.env.VITE_GOOGLE_FONTS_KEY': JSON.stringify(env.VITE_GOOGLE_FONTS_KEY || ""),
     },
     resolve: {
       alias: {
