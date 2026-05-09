@@ -10444,19 +10444,28 @@ export const MoscaTeePage: React.FC = () => {
       restoreOriginalStyles(canvas);
     }
     
+    // Hide grid and helper objects before export by removing them from
+    // the canvas (set visible=false has been unreliable on some setups).
+    // We re-add them below in the finally block, preserving original order.
+    const gridElements = canvas.getObjects().filter(obj =>
+      (obj as any).isGridLine ||
+      (obj as any).name === '__grid__' ||
+      (obj as any).name === '__grid_coord__' ||
+      (obj as any).name === '__grid_cursor__' ||
+      (obj as any).id === 'grid_rect'
+    );
+    const gridElementsWithIndex = gridElements.map(el => ({
+      el,
+      index: canvas.getObjects().indexOf(el),
+    }));
+
     // Prepare for export
     try {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-      
-      // Hide grid and helper objects before export
-      const gridElements = canvas.getObjects().filter(obj => 
-        (obj as any).isGridLine || 
-        (obj as any).name === '__grid__' || 
-        (obj as any).name === '__grid_coord__' || 
-        (obj as any).name === '__grid_cursor__' ||
-        (obj as any).id === 'grid_rect'
-      );
-      gridElements.forEach(line => line.set('visible', false));
+
+      if (gridElements.length > 0) {
+        canvas.remove(...gridElements);
+      }
       canvas.renderAll();
 
       if (format === 'psd') {
@@ -10592,23 +10601,25 @@ export const MoscaTeePage: React.FC = () => {
       // ALWAYS Restore state
       canvas.setViewportTransform(originalTransform!);
       canvas.backgroundColor = originalBG;
-      
-      const gridElements = canvas.getObjects().filter(obj => 
-        (obj as any).isGridLine || 
-        (obj as any).name === '__grid__' || 
-        (obj as any).name === '__grid_coord__' || 
-        (obj as any).name === '__grid_cursor__' ||
-        (obj as any).id === 'grid_rect'
-      );
-      
-      if (showGrid) {
-        gridElements.forEach(line => line.set('visible', true));
+
+      // Re-add the grid/helper objects we removed at the start, restoring
+      // their stacking order. Skip adding back if grid was toggled off
+      // mid-export (showGrid changed) — the next showGrid effect will
+      // recreate them.
+      if (showGrid && gridElementsWithIndex.length > 0) {
+        // Sort ascending so insertAt indices stay valid as we add
+        gridElementsWithIndex
+          .sort((a, b) => a.index - b.index)
+          .forEach(({ el, index }) => {
+            const max = canvas.getObjects().length;
+            canvas.insertAt(el, Math.min(index, max), false);
+          });
       }
-      
+
       if (wasOutline) {
         applyOutlineStyles(canvas);
       }
-      
+
       canvas.renderAll();
     }
   };

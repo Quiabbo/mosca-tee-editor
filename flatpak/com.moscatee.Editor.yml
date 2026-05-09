@@ -22,6 +22,11 @@ finish-args:
   - --filesystem=xdg-pictures
   - --filesystem=xdg-download
   - --talk-name=org.freedesktop.Notifications
+  # Accessibility / TTS: lets Chromium's Web Speech API reach the host's
+  # speech-dispatcher daemon (used by the blind/low-vision mode).
+  - --socket=session-bus
+  - --talk-name=org.freedesktop.speechd
+  - --filesystem=xdg-run/speech-dispatcher:ro
 
 build-options:
   append-path: /usr/lib/sdk/node20/bin
