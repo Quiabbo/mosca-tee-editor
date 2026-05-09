@@ -1,15 +1,20 @@
-const { app, BrowserWindow, Menu } = require('electron');
+const { app, BrowserWindow, Menu, screen } = require('electron');
 const path = require('path');
 const isDev = process.env.ELECTRON_IS_DEV === '1';
 
 let mainWindow;
 
 function createWindow() {
+  const { workAreaSize } = screen.getPrimaryDisplay();
+  const width = Math.min(1600, workAreaSize.width);
+  const height = Math.min(1000, workAreaSize.height);
+
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 1000,
-    minWidth: 1024,
-    minHeight: 768,
+    width,
+    height,
+    minWidth: 800,
+    minHeight: 600,
+    center: true,
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       nodeIntegration: false,
