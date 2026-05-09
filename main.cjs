@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
-const isDev = !app.isPackaged;
+const isDev = process.env.ELECTRON_IS_DEV === '1';
 
 let mainWindow;
 

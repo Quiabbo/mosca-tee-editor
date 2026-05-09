@@ -13,7 +13,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "electron": "electron .",
+    "electron": "ELECTRON_IS_DEV=1 electron .",
     "electron-build": "npm run build && electron-builder --dir --linux"
   },
   "dependencies": {
