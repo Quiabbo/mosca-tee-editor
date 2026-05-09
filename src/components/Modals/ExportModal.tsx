@@ -90,6 +90,23 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, onExp
     const originalTransform = canvas.viewportTransform?.slice();
     const originalVisibilities = artboards.map((a: any) => a.visible);
 
+    // Pull grid/helper objects out of the canvas while we render the preview,
+    // so they do not show up in the export thumbnail.
+    const gridElements = canvas.getObjects().filter((obj: any) =>
+      obj.isGridLine ||
+      obj.name === '__grid__' ||
+      obj.name === '__grid_coord__' ||
+      obj.name === '__grid_cursor__' ||
+      obj.id === 'grid_rect'
+    );
+    const gridElementsWithIndex = gridElements.map((el: any) => ({
+      el,
+      index: canvas.getObjects().indexOf(el),
+    }));
+    if (gridElements.length > 0) {
+      canvas.remove(...gridElements);
+    }
+
     // Prepare for preview
     canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
 
@@ -99,7 +116,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, onExp
     } else {
       artboards.forEach((a: any, i: number) => a.set('visible', i === currentPage));
     }
-    
+
     canvas.renderAll();
 
     const url = canvas.toDataURL({
@@ -118,6 +135,15 @@ export const ExportModal: React.FC<ExportModalProps> = ({ isOpen, onClose, onExp
     canvas.setViewportTransform(originalTransform!);
     canvas.backgroundColor = originalBG;
     artboards.forEach((a: any, i: number) => a.set('visible', originalVisibilities[i]));
+
+    // Re-add grid/helpers in original stacking order
+    gridElementsWithIndex
+      .sort((a: any, b: any) => a.index - b.index)
+      .forEach(({ el, index }: any) => {
+        const max = canvas.getObjects().length;
+        canvas.insertAt(el, Math.min(index, max), false);
+      });
+
     canvas.renderAll();
   }, [canvas, options, artboardSize, isOpen, currentPage]);
 

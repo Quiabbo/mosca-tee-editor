@@ -2022,12 +2022,8 @@ export const MoscaTeePage: React.FC = () => {
   // A11y State
   const { blindMode, setBlindMode, narrationSpeed, narrateMovements } = useA11yStore();
 
-  // Sync blindMode with showGrid
-  useEffect(() => {
-    if (blindMode) {
-      setShowGrid(true);
-    }
-  }, [blindMode]);
+  // Grid and blind mode are independent toggles — the user enables each one
+  // explicitly. (Previously enabling blind mode forced the grid on.)
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showA11yOnboarding, setShowA11yOnboarding] = useState(false);
   const [showLayerStylesModal, setShowLayerStylesModal] = useState(false);
