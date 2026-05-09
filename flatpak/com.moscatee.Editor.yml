@@ -42,7 +42,7 @@ modules:
       - type: script
         dest-filename: moscatee.sh
         commands:
-          - exec zypak-wrapper.sh /app/main/node_modules/electron/dist/electron /app/main/main.js "$@"
+          - exec zypak-wrapper.sh /app/main/node_modules/electron/dist/electron /app/main/main.cjs "$@"
     build-commands:
       # Install npm deps offline. --ignore-scripts skips postinstalls
       # (electron downloads its binary; sharp downloads libvips — neither
@@ -58,7 +58,7 @@ modules:
       - cd src && npm run build
       # Install the app
       - mkdir -p /app/main
-      - cp -a src/dist src/main.js src/preload.js src/package.json src/node_modules /app/main/
+      - cp -a src/dist src/main.cjs src/preload.cjs src/package.json src/node_modules /app/main/
       - install -Dm755 moscatee.sh /app/bin/moscatee
       - install -Dm644 src/flatpak/com.moscatee.Editor.desktop /app/share/applications/com.moscatee.Editor.desktop
       - install -Dm644 src/flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/com.moscatee.Editor.metainfo.xml
