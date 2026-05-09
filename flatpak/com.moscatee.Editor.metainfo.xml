@@ -5,8 +5,8 @@
   <project_license>AGPL-3.0-or-later</project_license>
   <name>Mosca Tee</name>
   <name xml:lang="pt_BR">Mosca Tee</name>
-  <summary>Free design editor for t-shirts and apparel</summary>
-  <summary xml:lang="pt_BR">Editor de design gratuito para camisetas e vestuário</summary>
+  <summary>Professional graphics editor with accessibility</summary>
+  <summary xml:lang="pt_BR">Editor gráfico profissional com acessibilidade</summary>
 
   <developer id="com.moscatee">
     <name>Filipi Hadji</name>
