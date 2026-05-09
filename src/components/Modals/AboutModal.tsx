@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, ExternalLink } from 'lucide-react';
-import { Link, useParams, useLocation } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 declare const anime: any;
@@ -169,15 +169,15 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                 <p className="text-[12px] text-zinc-500 mt-0.5">© 2026</p>
               </div>
               <div className="text-right">
-                <Link 
-                  to={lang === 'en' ? '/en/about' : '/pt-br/sobre'} 
+                <a
+                  href={`https://moscatee.com/${lang === 'en' ? 'en/about' : 'pt-br/sobre'}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[13px] text-blue-500 hover:text-blue-400 font-medium transition-colors"
                 >
                   moscatee.com/{lang === 'en' ? 'en/about' : 'pt-br/sobre'}
                   <ExternalLink size={14} />
-                </Link>
+                </a>
               </div>
             </div>
           </motion.div>
