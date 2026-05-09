@@ -62,6 +62,7 @@ export default defineConfig(({mode}) => {
     build: {
       chunkSizeWarningLimit: 1500,
       modulePreload: isElectronBuild ? false : true,
+      cssCodeSplit: !isElectronBuild,
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
