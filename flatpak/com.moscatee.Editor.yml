@@ -54,8 +54,9 @@ modules:
       - cd src/node_modules/electron/dist && unzip -q /run/build/moscatee/flatpak-node/cache/electron/electron-v32.3.3-linux-x64.zip
       - chmod +x src/node_modules/electron/dist/electron
       - echo "electron" > src/node_modules/electron/path.txt
-      # Build the renderer (Vite)
-      - cd src && npm run build
+      # Build the renderer (Vite). --base=./ produces relative asset
+      # paths so the bundle works with Electron's file:// loadFile.
+      - cd src && npm run build:electron
       # Install the app
       - mkdir -p /app/main
       - cp -a src/dist src/main.cjs src/preload.cjs src/package.json src/node_modules /app/main/
