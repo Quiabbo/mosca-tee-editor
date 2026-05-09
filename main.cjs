@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, screen } = require('electron');
+const { app, BrowserWindow, Menu, screen, shell } = require('electron');
 const path = require('path');
 const isDev = process.env.ELECTRON_IS_DEV === '1';
 
@@ -23,6 +23,15 @@ function createWindow() {
       sandbox: true
     },
     icon: path.join(__dirname, 'public/icon-512x512.png')
+  });
+
+  // Open external (http/https) links in the user's default browser
+  // instead of inside the Electron window.
+  mainWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      shell.openExternal(url);
+    }
+    return { action: 'deny' };
   });
 
   if (isDev) {

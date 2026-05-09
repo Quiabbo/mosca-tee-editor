@@ -11173,14 +11173,14 @@ export const MoscaTeePage: React.FC = () => {
               )}
             </div>
 
-            <Link 
-              to={i18n.language.startsWith('pt') ? '/pt-br/sobre' : '/en/about'}
+            <a
+              href="https://moscatee.com/en/about"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-1.5 text-[10px] font-bold bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-lg hover:border-zinc-700 transition-all ml-2"
             >
               {t('common.learn_more_project')}
-            </Link>
+            </a>
           </nav>
 
         </div>
