@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('electron', {
   tts: {
     speak: (text, lang, rate) => ipcRenderer.invoke('tts-speak', { text, lang, rate }),
     cancel: () => ipcRenderer.send('tts-cancel'),
+    test: () => ipcRenderer.invoke('tts-test'),
   },
 });
