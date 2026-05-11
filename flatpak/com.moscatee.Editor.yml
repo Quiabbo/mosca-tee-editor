@@ -43,7 +43,7 @@ modules:
         url: https://github.com/Quiabbo/mosca-tee-editor.git
         tag: v0.0.3
         dest: src
-      - generated-sources.json
+      - ../generated-sources.json
       - type: script
         dest-filename: moscatee.sh
         commands:
