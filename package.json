@@ -1,5 +1,8 @@
 {
-  "name": "react-example",
+  "name": "mosca-tee-editor",
+  "productName": "Mosca Tee",
+  "description": "Editor gráfico profissional focado em privacidade e acessibilidade.",
+  "author": "Filipi Hadji",
   "private": true,
   "version": "0.1.0",
   "type": "module",
