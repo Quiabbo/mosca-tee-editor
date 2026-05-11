@@ -8,6 +8,9 @@
     "start": "tsx server.ts",
     "build": "vite build",
     "preview": "vite preview",
+    "electron": "electron .",
+    "build:electron": "vite build --base=./",
+    "electron-build": "npm run build:electron && electron-builder",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },
@@ -71,7 +74,9 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
-    "vite-plugin-pwa": "^1.2.0"
+    "vite-plugin-pwa": "^1.2.0",
+    "electron": "^32.3.3",
+    "electron-builder": "^24.13.3"
   },
   "overrides": {
     "node-domexception": "file:./patches/node-domexception"
