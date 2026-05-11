@@ -933,10 +933,12 @@ export const translateDescription = (desc: string, type: string, lang: string) =
   }
 
   if (type === 'pexels' || type === 'image') {
-    // Remove pontuação uma única vez e converte para minúsculas
-    const cleanDesc = desc.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-    const words = cleanDesc.split(/\s+/);
-    const translatedWords = words.map(word => commonTranslations[word] || word);
+    let translated = desc.toLowerCase();
+    const words = translated.split(' ');
+    const translatedWords = words.map(word => {
+      const cleanWord = word.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+      return commonTranslations[cleanWord] || word;
+    });
     return translatedWords.join(' ');
   }
   

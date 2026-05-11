@@ -294,6 +294,24 @@ export const SobrePage: React.FC = () => {
     return () => clearInterval(timer);
   }, [accIndex, accessibilityTools.length, isPaused]);
 
+  const heroScreenshots = [
+    "https://moscatee.com/img/screen001.webp",
+    "https://moscatee.com/img/screen002.webp",
+    "https://moscatee.com/img/screen003.webp",
+    "https://moscatee.com/img/screen004.webp"
+  ];
+
+  const [currentScreen, setCurrentScreen] = React.useState(0);
+  const [direction, setDirection] = React.useState(1);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setDirection(1);
+      setCurrentScreen((prev) => (prev + 1) % heroScreenshots.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [heroScreenshots.length]);
+
   return (
     <div 
       ref={containerRef}
@@ -340,17 +358,68 @@ export const SobrePage: React.FC = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative max-w-5xl mx-auto rounded-[12px] overflow-hidden border border-zinc-800 shadow-[0_0_100px_rgba(255,255,255,0.05)]"
+            className="max-w-5xl mx-auto"
           >
-            <img 
-              src="https://moscatee.com/img/screenshot.png" 
-              alt="Mosca Tee Interface" 
-              className="w-full h-auto"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "https://moscatee.com/img/screenshot.png";
-              }}
-            />
+            <div className="relative rounded-[12px] overflow-hidden border border-zinc-800 shadow-[0_0_100px_rgba(255,255,255,0.05)] bg-zinc-900 group aspect-[16/10] sm:aspect-video mb-8">
+              <AnimatePresence initial={false} custom={direction}>
+                <motion.img
+                  key={currentScreen}
+                  src={heroScreenshots[currentScreen]}
+                  alt={`Mosca Tee Interface ${currentScreen + 1}`}
+                  custom={direction}
+                  initial={{ x: direction > 0 ? '100%' : '-100%' }}
+                  animate={{ x: 0 }}
+                  exit={{ x: direction > 0 ? '-100%' : '100%' }}
+                  transition={{ duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  referrerPolicy="no-referrer"
+                />
+              </AnimatePresence>
+
+              {/* Navigation Arrows on Hover */}
+              <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDirection(-1);
+                    setCurrentScreen((prev) => (prev - 1 + heroScreenshots.length) % heroScreenshots.length);
+                  }}
+                  className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-white/10 transition-colors"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setDirection(1);
+                    setCurrentScreen((prev) => (prev + 1) % heroScreenshots.length);
+                  }}
+                  className="w-10 h-10 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-white pointer-events-auto hover:bg-white/10 transition-colors"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            </div>
+
+            {/* Pagination Dots - Outside and No Glow */}
+            <div className="flex items-center justify-center gap-3">
+              {heroScreenshots.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    setDirection(idx > currentScreen ? 1 : -1);
+                    setCurrentScreen(idx);
+                  }}
+                  className={cn(
+                    "w-2 h-2 rounded-full transition-all duration-300",
+                    currentScreen === idx 
+                      ? "bg-white w-10" 
+                      : "bg-zinc-700 hover:bg-zinc-500"
+                  )}
+                  aria-label={`Ir para slide ${idx + 1}`}
+                />
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>

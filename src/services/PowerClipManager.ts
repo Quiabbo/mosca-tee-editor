@@ -108,15 +108,15 @@ export class PowerClipManager {
 
         this._dragStart = {
           // Proxy inicial
-          pL: obj.left,
-          pT: obj.top,
+          pL: obj.getCenterPoint().x,
+          pT: obj.getCenterPoint().y,
           pSX: obj.scaleX,
           pSY: obj.scaleY,
           pA: obj.angle,
 
           // Container inicial
-          cL: clip.container.left,
-          cT: clip.container.top,
+          cL: clip.container.getCenterPoint().x,
+          cT: clip.container.getCenterPoint().y,
           cSX: clip.container.scaleX,
           cSY: clip.container.scaleY,
           cA: clip.container.angle,
@@ -139,8 +139,9 @@ export class PowerClipManager {
       const clip = this.clips.get((obj as any)._pcId);
       if (!clip) return;
 
-      const dx = (obj.left ?? 0) - this._dragStart.pL;
-      const dy = (obj.top ?? 0) - this._dragStart.pT;
+      const proxyCenter = obj.getCenterPoint();
+      const dx = proxyCenter.x - this._dragStart.pL;
+      const dy = proxyCenter.y - this._dragStart.pT;
       const ratioX = (obj.scaleX ?? 1) / (this._dragStart.pSX || 1);
       const ratioY = (obj.scaleY ?? 1) / (this._dragStart.pSY || 1);
       const da = (obj.angle ?? 0) - (this._dragStart.pA ?? 0);
@@ -261,18 +262,21 @@ export class PowerClipManager {
     contentObj.set({ opacity: contentObj._savedOpacity ?? 1 });
     delete contentObj._savedOpacity;
 
-    // Proxy espelha o container exatamente
-    const proxy = new fabric.Rect({
-      left: containerObj.left,
-      top: containerObj.top,
+    // Proxy espelha o container exatamente (tipo e dimensões)
+    // Forçamos o uso do centro como origem para evitar que o objeto "pule" ao mudar a borda
+    const containerCenter = containerObj.getCenterPoint();
+    
+    const commonProxyProps = {
+      left: containerCenter.x,
+      top: containerCenter.y,
       width: containerObj.width,
       height: containerObj.height,
       scaleX: containerObj.scaleX,
       scaleY: containerObj.scaleY,
       angle: containerObj.angle,
-      originX: containerObj.originX,
-      originY: containerObj.originY,
-      fill: 'rgba(255,255,255,0.01)',
+      originX: 'center',
+      originY: 'center',
+      fill: '#FFFFFF',
       stroke: 'transparent',
       strokeWidth: 0,
       selectable: true,
@@ -285,14 +289,38 @@ export class PowerClipManager {
       cornerSize: 8,
       borderColor: '#3b82f6',
       perPixelTargetFind: false,
-    }) as any;
+      strokeUniform: true,
+      paintFirst: 'stroke'
+    };
 
-    if (containerObj.type === 'rect') {
-      proxy.set({
+    let proxy: any;
+    if (containerObj.type === 'circle') {
+      proxy = new fabric.Circle({
+        ...commonProxyProps,
+        radius: (containerObj as fabric.Circle).radius
+      });
+    } else if (containerObj.type === 'ellipse') {
+      proxy = new fabric.Ellipse({
+        ...commonProxyProps,
+        rx: (containerObj as fabric.Ellipse).rx,
+        ry: (containerObj as fabric.Ellipse).ry
+      });
+    } else {
+      proxy = new fabric.Rect({
+        ...commonProxyProps,
         rx: (containerObj as fabric.Rect).rx,
         ry: (containerObj as fabric.Rect).ry,
       });
     }
+
+    // Ajustar o container original para também operar pelo centro
+    containerObj.set({
+      originX: 'center',
+      originY: 'center',
+      left: containerCenter.x,
+      top: containerCenter.y
+    });
+    containerObj.setCoords();
 
     // 1. Configurar flags e roles de PowerClip
     proxy._pcProxy = true;
@@ -318,6 +346,8 @@ export class PowerClipManager {
     containerObj._origSWidth = containerObj.strokeWidth;
     containerObj.set({
       fill: 'transparent',
+      stroke: 'transparent',
+      strokeWidth: 0
     });
 
     this.clips.set(id, {
@@ -337,8 +367,15 @@ export class PowerClipManager {
     const clipShape = this._makeClipShape(containerObj);
     contentObj.set({ clipPath: clipShape, dirty: true });
 
+    // Adicionar proxy atrás do conteúdo para simular borda externa
+    // IMPORTANTE: O proxy deve ter preenchimento opaco para esconder a metade interna do stroke
     this.cvs.add(proxy);
-    this.cvs.bringToFront(proxy);
+    const contentIndex = this.cvs.getObjects().indexOf(contentObj);
+    if (contentIndex !== -1) {
+      proxy.moveTo(contentIndex);
+    } else {
+      this.cvs.sendToBack(proxy);
+    }
 
     this.placementMode = false;
     this.placementContent = null;
@@ -387,20 +424,45 @@ export class PowerClipManager {
           this.cvs.add(content);
           this.cvs.add(container);
 
-          const proxy = new fabric.Rect({
-            left: (clip.proxy.left ?? 0) + 20,
-            top: (clip.proxy.top ?? 0) + 20,
+          const proxyCenter = clip.proxy.getCenterPoint();
+          const commonProxyProps = {
+            left: proxyCenter.x + 20,
+            top: proxyCenter.y + 20,
             width: clip.proxy.width,
             height: clip.proxy.height,
             scaleX: clip.proxy.scaleX,
             scaleY: clip.proxy.scaleY,
             angle: clip.proxy.angle,
-            fill: 'rgba(255,255,255,0.01)',
+            originX: 'center',
+            originY: 'center',
+            fill: '#FFFFFF',
             stroke: 'transparent',
             selectable: true,
             evented: true,
             perPixelTargetFind: false,
-          }) as any;
+            strokeUniform: true,
+            paintFirst: 'stroke'
+          };
+
+          let proxy: any;
+          if (clip.proxy.type === 'circle') {
+            proxy = new fabric.Circle({
+              ...commonProxyProps,
+              radius: (clip.proxy as fabric.Circle).radius
+            });
+          } else if (clip.proxy.type === 'ellipse') {
+            proxy = new fabric.Ellipse({
+              ...commonProxyProps,
+              rx: (clip.proxy as fabric.Ellipse).rx,
+              ry: (clip.proxy as fabric.Ellipse).ry
+            });
+          } else {
+            proxy = new fabric.Rect({
+              ...commonProxyProps,
+              rx: (clip.proxy as fabric.Rect).rx,
+              ry: (clip.proxy as fabric.Rect).ry,
+            });
+          }
 
           proxy._pcProxy = true;
           proxy._pcId = newId;
@@ -415,7 +477,12 @@ export class PowerClipManager {
           });
 
           this.cvs.add(proxy);
-          this.cvs.bringToFront(proxy);
+          const contentIdx = this.cvs.getObjects().indexOf(content);
+          if (contentIdx !== -1) {
+            proxy.moveTo(contentIdx);
+          } else {
+            this.cvs.sendToBack(proxy);
+          }
           this.cvs.setActiveObject(proxy);
           this.cvs.renderAll();
 
@@ -477,14 +544,14 @@ export class PowerClipManager {
 
   private _makeGuideShape(src: fabric.Object): fabric.Object {
     const base = {
-      left: src.left,
-      top: src.top,
+      left: src.getCenterPoint().x,
+      top: src.getCenterPoint().y,
       width: src.width,
       height: src.height,
       scaleX: src.scaleX,
       scaleY: src.scaleY,
-      originX: src.originX || 'left',
-      originY: src.originY || 'top',
+      originX: 'center',
+      originY: 'center',
       angle: src.angle || 0,
       fill: 'transparent',
       stroke: '#3b82f6',

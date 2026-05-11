@@ -2022,8 +2022,12 @@ export const MoscaTeePage: React.FC = () => {
   // A11y State
   const { blindMode, setBlindMode, narrationSpeed, narrateMovements } = useA11yStore();
 
-  // Grid and blind mode are independent toggles — the user enables each one
-  // explicitly. (Previously enabling blind mode forced the grid on.)
+  // Sync blindMode with showGrid
+  useEffect(() => {
+    if (blindMode) {
+      setShowGrid(true);
+    }
+  }, [blindMode]);
   const [showShortcutsModal, setShowShortcutsModal] = useState(false);
   const [showA11yOnboarding, setShowA11yOnboarding] = useState(false);
   const [showLayerStylesModal, setShowLayerStylesModal] = useState(false);
@@ -7459,6 +7463,17 @@ export const MoscaTeePage: React.FC = () => {
 
     const isArtboard = activeObject.id && activeObject.id.toString().startsWith('artboard_bg');
 
+    if (!isArtboard && (activeObject.originX !== 'center' || activeObject.originY !== 'center')) {
+      const center = activeObject.getCenterPoint();
+      activeObject.set({
+        originX: 'center',
+        originY: 'center',
+        left: center.x,
+        top: center.y
+      });
+      activeObject.setCoords();
+    }
+
     if (isArtboard && (prop === 'width' || prop === 'height' || prop === 'scaleX' || prop === 'scaleY')) {
       let newWidth = activeObject.width;
       let newHeight = activeObject.height;
@@ -7505,17 +7520,29 @@ export const MoscaTeePage: React.FC = () => {
       if (prop === 'rx') (activeObject as any)._target_radius = value;
     } else if (prop === 'strokeWidth') {
       // Logic for External Border (stroke behind fill)
-      activeObject.set({
-        strokeWidth: value * 2, 
-        paintFirst: 'stroke',
-        strokeUniform: true,
-        strokeLineJoin: 'miter',
-        strokeLineCap: 'butt'
-      });
+      const sw = value * 2;
+      if (activeObject.getObjects) {
+        activeObject.getObjects().forEach((obj: any) => {
+          obj.set({
+            strokeWidth: sw, 
+            paintFirst: 'stroke',
+            strokeUniform: true
+          });
+          obj._originalStrokeWidth = value;
+        });
+      } else {
+        activeObject.set({
+          strokeWidth: sw, 
+          paintFirst: 'stroke',
+          strokeUniform: true,
+          strokeLineJoin: 'miter',
+          strokeLineCap: 'butt'
+        });
+      }
       (activeObject as any)._originalStrokeWidth = value;
     } else if (prop === 'opacity') {
       activeObject.set(prop, value / 100);
-    } else if ((prop === 'fill' || prop === 'stroke' || prop === 'strokeWidth') && (activeObject.type === 'group' || activeObject.type === 'path' || activeObject.type === 'svg')) {
+    } else if ((prop === 'fill' || prop === 'stroke') && (activeObject.type === 'group' || activeObject.type === 'path' || activeObject.type === 'svg')) {
       // Handle icons (groups or paths)
       if (activeObject.getObjects) {
         activeObject.getObjects().forEach((obj: any) => obj.set(prop, value));
@@ -8708,6 +8735,10 @@ export const MoscaTeePage: React.FC = () => {
       fill: color,
       strokeWidth: 0,
       stroke: null,
+      originX: 'center',
+      originY: 'center',
+      strokeUniform: true,
+      paintFirst: 'stroke'
     };
 
     switch (type) {
@@ -8804,8 +8835,10 @@ export const MoscaTeePage: React.FC = () => {
       fontSize: 40,
       fill: useColorStore.getState().foreground,
       textAlign: 'left',
-      originX: 'left',
-      originY: 'top',
+      originX: 'center',
+      originY: 'center',
+      strokeUniform: true,
+      paintFirst: 'stroke'
     });
     
     if (left === undefined || top === undefined) {
@@ -8843,8 +8876,10 @@ export const MoscaTeePage: React.FC = () => {
       fill: useColorStore.getState().foreground,
       backgroundColor: 'transparent',
       textAlign: 'left',
-      originX: 'left',
-      originY: 'top',
+      originX: 'center',
+      originY: 'center',
+      strokeUniform: true,
+      paintFirst: 'stroke',
       // @ts-ignore
       rx: 6,
       // @ts-ignore
@@ -10440,28 +10475,19 @@ export const MoscaTeePage: React.FC = () => {
       restoreOriginalStyles(canvas);
     }
     
-    // Hide grid and helper objects before export by removing them from
-    // the canvas (set visible=false has been unreliable on some setups).
-    // We re-add them below in the finally block, preserving original order.
-    const gridElements = canvas.getObjects().filter(obj =>
-      (obj as any).isGridLine ||
-      (obj as any).name === '__grid__' ||
-      (obj as any).name === '__grid_coord__' ||
-      (obj as any).name === '__grid_cursor__' ||
-      (obj as any).id === 'grid_rect'
-    );
-    const gridElementsWithIndex = gridElements.map(el => ({
-      el,
-      index: canvas.getObjects().indexOf(el),
-    }));
-
     // Prepare for export
     try {
       canvas.setViewportTransform([1, 0, 0, 1, 0, 0]);
-
-      if (gridElements.length > 0) {
-        canvas.remove(...gridElements);
-      }
+      
+      // Hide grid and helper objects before export
+      const gridElements = canvas.getObjects().filter(obj => 
+        (obj as any).isGridLine || 
+        (obj as any).name === '__grid__' || 
+        (obj as any).name === '__grid_coord__' || 
+        (obj as any).name === '__grid_cursor__' ||
+        (obj as any).id === 'grid_rect'
+      );
+      gridElements.forEach(line => line.set('visible', false));
       canvas.renderAll();
 
       if (format === 'psd') {
@@ -10597,25 +10623,23 @@ export const MoscaTeePage: React.FC = () => {
       // ALWAYS Restore state
       canvas.setViewportTransform(originalTransform!);
       canvas.backgroundColor = originalBG;
-
-      // Re-add the grid/helper objects we removed at the start, restoring
-      // their stacking order. Skip adding back if grid was toggled off
-      // mid-export (showGrid changed) — the next showGrid effect will
-      // recreate them.
-      if (showGrid && gridElementsWithIndex.length > 0) {
-        // Sort ascending so insertAt indices stay valid as we add
-        gridElementsWithIndex
-          .sort((a, b) => a.index - b.index)
-          .forEach(({ el, index }) => {
-            const max = canvas.getObjects().length;
-            canvas.insertAt(el, Math.min(index, max), false);
-          });
+      
+      const gridElements = canvas.getObjects().filter(obj => 
+        (obj as any).isGridLine || 
+        (obj as any).name === '__grid__' || 
+        (obj as any).name === '__grid_coord__' || 
+        (obj as any).name === '__grid_cursor__' ||
+        (obj as any).id === 'grid_rect'
+      );
+      
+      if (showGrid) {
+        gridElements.forEach(line => line.set('visible', true));
       }
-
+      
       if (wasOutline) {
         applyOutlineStyles(canvas);
       }
-
+      
       canvas.renderAll();
     }
   };
@@ -11180,14 +11204,14 @@ export const MoscaTeePage: React.FC = () => {
               )}
             </div>
 
-            <a
-              href="https://moscatee.com/en/about"
+            <Link 
+              to={i18n.language.startsWith('pt') ? '/pt-br/sobre' : '/en/about'}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-1.5 text-[10px] font-bold bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-lg hover:border-zinc-700 transition-all ml-2"
             >
               {t('common.learn_more_project')}
-            </a>
+            </Link>
           </nav>
 
         </div>
