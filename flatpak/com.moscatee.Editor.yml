@@ -30,9 +30,10 @@ finish-args:
 
 build-options:
   append-path: /usr/lib/sdk/node20/bin
+  build-args:
+    - --share=network
   env:
     npm_config_nodedir: /usr/lib/sdk/node20
-    npm_config_offline: 'true'
     npm_config_cache: /run/build/moscatee/flatpak-node/npm-cache
 
 modules:
@@ -49,10 +50,10 @@ modules:
         commands:
           - exec zypak-wrapper.sh /app/main/node_modules/electron/dist/electron /app/main/main.cjs "$@"
     build-commands:
-      # Install npm deps offline. --ignore-scripts skips postinstalls
+      # Install npm deps with network. --ignore-scripts skips postinstalls
       # (electron downloads its binary; sharp downloads libvips — neither
       # works in the network-less Flathub sandbox, so we handle them below).
-      - cd src && npm ci --offline --ignore-scripts
+      - cd src && npm ci --ignore-scripts
       # Unpack the cached Electron binary into node_modules/electron/dist
       # (replaces what electron's install.js would have done online).
       - mkdir -p src/node_modules/electron/dist
