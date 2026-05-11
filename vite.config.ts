@@ -6,12 +6,11 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
-  const isElectronBuild = process.env.ELECTRON_BUILD === '1';
   return {
     plugins: [
-      react(),
+      react(), 
       tailwindcss(),
-      ...(isElectronBuild ? [] : [VitePWA({
+      VitePWA({
         registerType: 'autoUpdate',
         injectRegister: 'auto',
         devOptions: {
@@ -47,7 +46,7 @@ export default defineConfig(({mode}) => {
             }
           ]
         }
-      })])
+      })
     ],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || env.VITE_GEMINI_API_KEY || ""),
@@ -61,8 +60,6 @@ export default defineConfig(({mode}) => {
     },
     build: {
       chunkSizeWarningLimit: 1500,
-      modulePreload: isElectronBuild ? false : true,
-      cssCodeSplit: !isElectronBuild,
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.
