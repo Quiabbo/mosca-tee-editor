@@ -7,9 +7,12 @@
   },
   "files": [
     "dist-web/**/*",
+    "patches/**/*",
+    "public/**/*",
     "main.cjs",
     "preload.cjs",
-    "package.json"
+    "package.json",
+    "metadata.json"
   ],
   "linux": {
     "target": [
