@@ -41,7 +41,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/Quiabbo/mosca-tee-editor.git
-        tag: v0.0.3
+        tag: v0.0.5
         dest: src
       - ../generated-sources.json
       - type: script
