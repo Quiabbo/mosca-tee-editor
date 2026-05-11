@@ -1,28 +1,9 @@
 
-# Mosca Tee — Editor de Design Online
+# Mosca Tee — Editor Gráfico Profissional e com Acessibilidade
 
-Mosca Tee é um editor de imagens e design online criado por Filipi Hadji. Este repositório contém o código-fonte do editor, scripts de build e empacotamento (incluindo configuração Flatpak), e os ativos usados pela aplicação.
+Mosca Tee é um editor gráfico profissional criado por Filipi Hadji. Este repositório contém o código-fonte do editor, scripts de build e empacotamento (incluindo configuração Flatpak), e os ativos usados pela aplicação.
 
 Resumo do projeto (veja também a página Sobre do site):
-
-## Autor
-
-Filipi Hadji
-
-## Rodar localmente
-
-**Pré-requisitos:** Node.js
-
-1. Instalar dependências:
-   `npm install`
-2. Configurar variáveis de ambiente (veja `.env`):
-   - Ajuste as chaves necessárias caso utilize APIs externas.
-3. Executar em modo de desenvolvimento:
-   `npm run dev`
-
-## Empacotamento
-
-O diretório `flatpak/` contém o manifesto usado para criar o pacote Flatpak. Antes de enviar ao Flathub, atualize o campo `commit` em `flatpak/com.moscatee.Editor.yml` para o hash exato do commit que deseja publicar (o arquivo foi atualizado para apontar para este repositório e o commit atual).
 
 Mosca Tee — Editor de Design Profissional e Inclusivo
 ===============================================
@@ -44,7 +25,7 @@ Esta versão foi adaptada para rodar como uma aplicação desktop via Electron, 
 -------
 Idealizado e desenvolvido por Filipi Hadji.
 
-O projeto nasceu com a missão de democratizar o acesso a ferramentas de design profissional no Brasil e no mundo.
+O projeto nasceu com a missão de democratizar o acesso a ferramentas de design profissional no mundo.
 
 🛠️ Como rodar localmente
 -----------------------
@@ -86,4 +67,4 @@ Para compilar e testar o Flatpak localmente:
 
 📄 Licença
 ---------
-Este projeto está sob a licença MIT.
+Este projeto está sob a licença GPL.
