@@ -10,7 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "electron": "electron .",
-    "build:electron": "vite build --base=./",
+    "build:electron": "vite build --base=./ --outDir dist-web",
     "electron-build": "npm run build:electron && electron-builder",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
