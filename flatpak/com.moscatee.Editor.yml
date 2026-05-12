@@ -42,32 +42,27 @@ modules:
     sources:
       - type: dir
         path: ../
-        dest: src
       - type: script
         dest-filename: moscatee.sh
         commands:
           - exec zypak-wrapper.sh /app/main/node_modules/electron/dist/electron /app/main/main.cjs "$@"
     build-commands:
-      # Install npm deps with network. --ignore-scripts skips postinstalls
-      # (electron downloads its binary; sharp downloads libvips — neither
-      # works in the network-less Flathub sandbox, so we handle them below).
-      - cd src && npm install --ignore-scripts
+      # Install npm deps with network.
+      - npm install --ignore-scripts
       # Unpack the cached Electron binary into node_modules/electron/dist
-      # (replaces what electron's install.js would have done online).
-      - mkdir -p src/node_modules/electron/dist
-      - cd src/node_modules/electron/dist && unzip -q /run/build/moscatee/flatpak-node/cache/electron/electron-v32.3.3-linux-x64.zip
-      - chmod +x src/node_modules/electron/dist/electron
-      - echo "electron" > src/node_modules/electron/path.txt
-      # Build the renderer (Vite). --base=./ produces relative asset
-      # paths so the bundle works with Electron's file:// loadFile.
-      - cd src && npm run build:electron
+      - mkdir -p node_modules/electron/dist
+      - cd node_modules/electron/dist && unzip -q /run/build/moscatee/flatpak-node/cache/electron/electron-v32.3.3-linux-x64.zip
+      - chmod +x node_modules/electron/dist/electron
+      - echo "electron" > node_modules/electron/path.txt
+      # Build the renderer (Vite).
+      - npm run build:electron
       # Install the app
       - mkdir -p /app/main
-      - cp -a src/dist src/main.cjs src/preload.cjs src/package.json src/node_modules /app/main/
+      - cp -a dist-web main.cjs preload.cjs package.json node_modules /app/main/
       - install -Dm755 moscatee.sh /app/bin/moscatee
-      - install -Dm644 src/flatpak/com.moscatee.Editor.desktop /app/share/applications/com.moscatee.Editor.desktop
-      - install -Dm644 src/flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/com.moscatee.Editor.metainfo.xml
-      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-48x48.png /app/share/icons/hicolor/48x48/apps/com.moscatee.Editor.png
-      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-128x128.png /app/share/icons/hicolor/128x128/apps/com.moscatee.Editor.png
-      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-256x256.png /app/share/icons/hicolor/256x256/apps/com.moscatee.Editor.png
-      - install -Dm644 src/flatpak/icons/com.moscatee.Editor-512x512.png /app/share/icons/hicolor/512x512/apps/com.moscatee.Editor.png
+      - install -Dm644 flatpak/com.moscatee.Editor.desktop /app/share/applications/com.moscatee.Editor.desktop
+      - install -Dm644 flatpak/com.moscatee.Editor.metainfo.xml /app/share/metainfo/com.moscatee.Editor.metainfo.xml
+      - install -Dm644 flatpak/icons/com.moscatee.Editor-48x48.png /app/share/icons/hicolor/48x48/apps/com.moscatee.Editor.png
+      - install -Dm644 flatpak/icons/com.moscatee.Editor-128x128.png /app/share/icons/hicolor/128x128/apps/com.moscatee.Editor.png
+      - install -Dm644 flatpak/icons/com.moscatee.Editor-256x256.png /app/share/icons/hicolor/256x256/apps/com.moscatee.Editor.png
+      - install -Dm644 flatpak/icons/com.moscatee.Editor-512x512.png /app/share/icons/hicolor/512x512/apps/com.moscatee.Editor.png
