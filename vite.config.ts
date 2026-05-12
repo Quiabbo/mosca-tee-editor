@@ -34,13 +34,13 @@ export default defineConfig(({mode}) => {
           display: 'standalone',
           icons: [
             {
-              src: 'https://moscatee.com/assets/img/icon-mosca-192.png',
-              sizes: '192x192',
+              src: '/icon-512x512.png',
+              sizes: '512x512',
               type: 'image/png',
               purpose: 'any'
             },
             {
-              src: 'https://moscatee.com/assets/img/icon-mosca-512.png',
+              src: '/icon-512x512.png',
               sizes: '512x512',
               type: 'image/png',
               purpose: 'any maskable'

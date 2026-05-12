@@ -202,16 +202,16 @@ function createWindow() {
       enableRemoteModule: false,
       sandbox: true
     },
-    icon: path.join(__dirname, 'public/icon-512x512.png')
+    icon: path.join(__dirname, 'dist-web', 'icon-512x512.png')
   });
 
-  // Handle CSP headers to allow Google Fonts and CDNs
+  // Handle CSP headers - allow inline styles but NO unsafe-eval
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
-          "default-src 'self' 'unsafe-inline' 'unsafe-eval' file: data: blob: https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https: blob:; font-src 'self' data: https://fonts.gstatic.com;"
+          "default-src 'self' 'unsafe-inline' file: data: blob:; img-src 'self' data: https: blob:; connect-src 'self' https: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline';"
         ]
       }
     });
@@ -232,9 +232,6 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, 'dist-web/index.html'));
   }
-  
-  // Temporarily enable DevTools in production to debug the white screen
-  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
