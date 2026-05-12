@@ -6,7 +6,7 @@ import './index.css';
 import './i18n';
 import { HelmetProvider } from 'react-helmet-async';
 import * as agPsd from 'ag-psd';
-import anime from 'animejs';
+import { animate as anime } from 'animejs';
 
 // Attach to window for compatibility with code that expects global variables
 (window as any).agPsd = agPsd;
