@@ -205,6 +205,18 @@ function createWindow() {
     icon: path.join(__dirname, 'public/icon-512x512.png')
   });
 
+  // Handle CSP headers to allow Google Fonts and CDNs
+  mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        'Content-Security-Policy': [
+          "default-src 'self' 'unsafe-inline' 'unsafe-eval' file: data: blob: https://fonts.googleapis.com https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https: blob:; connect-src 'self' https: blob:; font-src 'self' data: https://fonts.gstatic.com;"
+        ]
+      }
+    });
+  });
+
   // Open external (http/https) links in the user's default browser
   // instead of inside the Electron window.
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
