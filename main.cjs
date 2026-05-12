@@ -205,13 +205,13 @@ function createWindow() {
     icon: path.join(__dirname, 'dist-web', 'icon-512x512.png')
   });
 
-  // Handle CSP headers - allow inline styles but NO unsafe-eval
+  // Handle CSP headers - Electron requires unsafe-eval for dynamic code execution
   mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
         ...details.responseHeaders,
         'Content-Security-Policy': [
-          "default-src 'self' 'unsafe-inline' file: data: blob:; img-src 'self' data: https: blob:; connect-src 'self' https: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline';"
+          "default-src 'self' 'unsafe-inline' 'unsafe-eval' file: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' file: blob:; img-src 'self' data: https: blob:; connect-src 'self' https: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline';"
         ]
       }
     });

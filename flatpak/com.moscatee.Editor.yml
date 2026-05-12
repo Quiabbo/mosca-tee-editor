@@ -21,10 +21,13 @@ finish-args:
   - --filesystem=xdg-documents
   - --filesystem=xdg-pictures
   - --filesystem=xdg-download
+  - --filesystem=home
   - --talk-name=org.freedesktop.Notifications
-  # Accessibility / TTS: lets Chromium's Web Speech API reach the host's
-  # speech-dispatcher daemon (used by the blind/low-vision mode).
+  - --talk-name=org.freedesktop.Flatpak
+  # D-Bus access for system/session
+  - --system-socket=system-bus
   - --socket=session-bus
+  # Accessibility / TTS
   - --talk-name=org.freedesktop.speechd
   - --filesystem=xdg-run/speech-dispatcher
 
@@ -43,7 +46,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/Quiabbo/mosca-tee-editor.git
-        tag: v0.1.22
+        branch: release/flathub-v0.0.1
         dest: src
       - ../generated-sources.json
       - type: script
