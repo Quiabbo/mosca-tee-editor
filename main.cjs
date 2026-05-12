@@ -220,6 +220,9 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, 'dist-web/index.html'));
   }
+  
+  // Temporarily enable DevTools in production to debug the white screen
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
