@@ -35,7 +35,7 @@ modules:
       - npm run build
     sources:
       - type: git
-        url: https://github.com/moscatee/mosca-tee.git
+        url: https://github.com/Quiabbo/mosca-tee-editor.git
         branch: main
       - type: file
         path: .npmrc
@@ -115,7 +115,7 @@ modules:
               </screenshot>
             </screenshots>
             <url type="homepage">https://moscatee.com</url>
-            <url type="bugtracker">https://github.com/moscatee/mosca-tee/issues</url>
+            <url type="bugtracker">https://github.com/Quiabbo/mosca-tee-editor/issues</url>
             <url type="help">https://moscatee.com/en/about</url>
             <project_license>GPL-3.0+</project_license>
             <metadata_license>CC0-1.0</metadata_license>
