@@ -33,7 +33,6 @@ The project was born from a specific mission: make design accessible to blind an
 
 ### Advanced Capabilities  
 - Open and edit Photoshop (PSD) files
-- AI-powered background removal
 - Convert images to SVG vectors
 - Import thousands of free images and icons from Pexels
 - Filters and image adjustments (brightness, contrast, saturation)
@@ -64,8 +63,8 @@ The project was born from a specific mission: make design accessible to blind an
 ### Web Version (Quick Start)
 
 ```bash
-git clone https://github.com/moscatee/mosca-tee.git
-cd mosca-tee
+git clone https://github.com/Quiabbo/mosca-tee-editor.git
+cd mosca-tee-editor
 npm install
 npm run dev
 ```
@@ -152,7 +151,7 @@ See [LICENSE](LICENSE) for full details or visit https://www.gnu.org/licenses/gp
 ## Support
 
 - **Website:** https://moscatee.com
-- **Issues & Bug Reports:** https://github.com/moscatee/mosca-tee/issues
+- **Issues & Bug Reports:** https://github.com/Quiabbo/mosca-tee-editor/issues
 - **Documentation:** Read the guides in this repository
 - **Design Guide:** https://moscatee.com/en/blog
 
