@@ -79,8 +79,9 @@ modules:
           Terminal=false
           X-Flatpak=com.moscatee.MoscaTee
       - type: file
-        path: public/icon.png
+        path: public/icon-512x512.png
         dest: .
+        dest-filename: icon.png
 
   - name: appdata
     buildsystem: simple
