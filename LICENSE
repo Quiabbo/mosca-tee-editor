@@ -1,0 +1,46 @@
+GNU GENERAL PUBLIC LICENSE
+Version 3, 29 June 2007
+
+Copyright (C) 2026 Mosca Tee
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+
+FULL LICENSE TEXT:
+
+For the complete GPL-3.0 license text, visit:
+https://www.gnu.org/licenses/gpl-3.0.html
+
+---
+
+DESIGN AND INTERFACE NOTICE:
+
+While the source code of Mosca Tee is licensed under GPL-3.0, the design,
+visual interface, and user experience elements are the intellectual property
+of Mosca Tee and remain protected. When creating derivative works or 
+modifications, you must:
+
+1. Clearly distinguish your modifications from the original
+2. Preserve copyright notices and attribution
+3. Maintain the GPL-3.0 license for code changes
+4. Create a new visual identity if redistributing
+
+This ensures derivative works respect both the spirit of open-source 
+software and the design integrity of Mosca Tee.
+
+---
+
+© 2026 Mosca Tee. All rights reserved.
+Licensed under GNU General Public License v3.0

@@ -1,0 +1,134 @@
+app-id: com.moscatee.MoscaTee
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.node18
+
+base: org.electronjs.Electron2.BaseApp
+base-version: '23.08'
+
+separate-locales: false
+tags:
+  - proprietary
+
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --socket=pulseaudio
+  - --filesystem=home
+  - --filesystem=/tmp
+  - --file-access=host
+
+command: mosca-tee
+
+modules:
+  - name: node-modules
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/lib/app
+      - cp -r . /app/lib/app/
+      - cd /app/lib/app
+      - npm ci --ignore-scripts
+      - npm run build
+    sources:
+      - type: git
+        url: https://github.com/moscatee/mosca-tee.git
+        branch: main
+      - type: file
+        path: .npmrc
+        dest: .
+
+  - name: electron-wrapper
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/bin
+      - cp mosca-tee /app/bin/
+      - chmod +x /app/bin/mosca-tee
+    sources:
+      - type: inline
+        dest-filename: mosca-tee
+        contents: |
+          #!/bin/bash
+          export PATH="/app/lib/app/node_modules/.bin:$PATH"
+          cd /app/lib/app
+          npm start
+
+  - name: desktop-file
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/applications
+      - mkdir -p /app/share/icons/hicolor/512x512/apps
+      - cp com.moscatee.MoscaTee.desktop /app/share/applications/
+      - cp icon.png /app/share/icons/hicolor/512x512/apps/com.moscatee.MoscaTee.png
+    sources:
+      - type: inline
+        dest-filename: com.moscatee.MoscaTee.desktop
+        contents: |
+          [Desktop Entry]
+          Type=Application
+          Name=Mosca Tee
+          Comment=Free online graphic editor with accessibility
+          Exec=mosca-tee
+          Icon=com.moscatee.MoscaTee
+          Categories=Graphics;
+          Keywords=graphics;design;editor;accessibility;
+          StartupNotify=true
+          Terminal=false
+          X-Flatpak=com.moscatee.MoscaTee
+      - type: file
+        path: public/icon.png
+        dest: .
+
+  - name: appdata
+    buildsystem: simple
+    build-commands:
+      - mkdir -p /app/share/metainfo
+      - cp com.moscatee.MoscaTee.metainfo.xml /app/share/metainfo/
+    sources:
+      - type: inline
+        dest-filename: com.moscatee.MoscaTee.metainfo.xml
+        contents: |
+          <?xml version="1.0" encoding="UTF-8"?>
+          <component type="desktop-application">
+            <id>com.moscatee.MoscaTee</id>
+            <name>Mosca Tee</name>
+            <summary>Free online graphic editor with accessibility for blind and low-vision people</summary>
+            <description>
+              <p>Mosca Tee is a professional, free, and open-source online graphic editor designed with inclusivity at its core. Create designs that are understood by everyone, with zero cost, total privacy, and no login required.</p>
+              <p>Features:</p>
+              <ul>
+                <li>100% Free - No premium plans, no watermarks</li>
+                <li>No Login Required - Start creating instantly</li>
+                <li>Total Privacy - Everything is processed locally</li>
+                <li>Inclusive Accessibility - First editor with real accessibility for blind and low-vision people</li>
+                <li>Professional Tools - Brush, text, shapes, filters, and more</li>
+                <li>PSD Support - Open and save Photoshop files</li>
+                <li>AI Features - Background removal and vectorization</li>
+              </ul>
+            </description>
+            <screenshots>
+              <screenshot type="default">
+                <image>https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6</image>
+              </screenshot>
+            </screenshots>
+            <url type="homepage">https://moscatee.com</url>
+            <url type="bugtracker">https://github.com/moscatee/mosca-tee/issues</url>
+            <url type="help">https://moscatee.com/en/about</url>
+            <project_license>GPL-3.0+</project_license>
+            <metadata_license>CC0-1.0</metadata_license>
+            <content_rating type="oars-1.1" />
+            <categories>
+              <category>Graphics</category>
+            </categories>
+            <keyword>graphics</keyword>
+            <keyword>design</keyword>
+            <keyword>editor</keyword>
+            <keyword>accessibility</keyword>
+            <developer id="com.moscatee">
+              <name>Mosca Tee</name>
+            </developer>
+            <launchable type="desktop-id">com.moscatee.MoscaTee.desktop</launchable>
+          </component>

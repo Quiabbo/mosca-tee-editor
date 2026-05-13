@@ -1,0 +1,63 @@
+# Flatpak build directory
+build/
+
+# Node modules and dependencies
+node_modules/
+npm-debug.log
+npm-error.log
+yarn-error.log
+pnpm-error.log
+
+# Build artifacts
+dist/
+build/
+*.o
+*.so
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.sublime-project
+*.sublime-workspace
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Compiled outputs
+*.js
+!vite.config.js
+!tailwind.config.js
+*.ts
+!*.d.ts
+!vite.config.ts
+!tailwind.config.ts
+!server.ts
