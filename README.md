@@ -1,7 +1,3 @@
-<div align="center">
-<img width="1200" height="475" alt="Mosca Tee" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
-
 # Mosca Tee - Online Graphic Editor
 
 **The world's first and only graphic editor with accessibility for blind and low-vision people.**
@@ -33,6 +29,7 @@ The project was born from a specific mission: make design accessible to blind an
 
 ### Advanced Capabilities  
 - Open and edit Photoshop (PSD) files
+- AI-powered background removal
 - Convert images to SVG vectors
 - Import thousands of free images and icons from Pexels
 - Filters and image adjustments (brightness, contrast, saturation)
