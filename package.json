@@ -7,10 +7,10 @@
   "homepage": "https://moscatee.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/moscatee/mosca-tee.git"
+    "url": "https://github.com/Quiabbo/mosca-tee-editor.git"
   },
   "bugs": {
-    "url": "https://github.com/moscatee/mosca-tee/issues"
+    "url": "https://github.com/Quiabbo/mosca-tee-editor/issues"
   },
   "license": "GPL-3.0-or-later",
   "author": {
