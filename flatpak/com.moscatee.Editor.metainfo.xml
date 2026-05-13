@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.moscatee.Editor</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>AGPL-3.0-or-later</project_license>
+  <name>Mosca Tee</name>
+  <name xml:lang="pt_BR">Mosca Tee</name>
+  <summary>Professional graphics editor with accessibility</summary>
+  <summary xml:lang="pt_BR">Editor gráfico profissional com acessibilidade</summary>
+
+  <developer id="com.moscatee">
+    <name>Filipi Hadji</name>
+  </developer>
+
+  <launchable type="desktop-id">com.moscatee.Editor.desktop</launchable>
+
+  <description>
+    <p>Mosca Tee is a free, open-source design editor specifically built for creating custom t-shirt and apparel designs. With a comprehensive suite of creative tools including brushes, shapes, text, and advanced effects, you can design professional-looking products right from your desktop.</p>
+    <p xml:lang="pt_BR">Mosca Tee é um editor de design gratuito e de código aberto especialmente construído para criar designs personalizados de camisetas e vestuário. Com um conjunto abrangente de ferramentas criativas, incluindo pincéis, formas, texto e efeitos avançados, você pode projetar produtos com aparência profissional diretamente do seu desktop.</p>
+
+    <p>Features:</p>
+    <p xml:lang="pt_BR">Recursos:</p>
+    <ul>
+      <li>Advanced drawing tools including brushes and pens</li>
+      <li xml:lang="pt_BR">Ferramentas avançadas de desenho, incluindo pincéis e canetas</li>
+      <li>Shape and layer management</li>
+      <li xml:lang="pt_BR">Gerenciamento de formas e camadas</li>
+      <li>Professional text editor with custom fonts</li>
+      <li xml:lang="pt_BR">Editor de texto profissional com fontes personalizadas</li>
+      <li>Color picker and blend modes</li>
+      <li xml:lang="pt_BR">Seletor de cores e modos de mesclagem</li>
+      <li>Image filters and effects</li>
+      <li xml:lang="pt_BR">Filtros e efeitos de imagem</li>
+      <li>Multi-language support</li>
+      <li xml:lang="pt_BR">Suporte multi-idioma</li>
+      <li>Export to multiple formats</li>
+      <li xml:lang="pt_BR">Exportação para múltiplos formatos</li>
+    </ul>
+  </description>
+
+  <url type="homepage">https://moscatee.com/en/about</url>
+  <url type="bugtracker">https://github.com/Quiabbo/mosca-tee-editor/issues</url>
+  <url type="help">https://github.com/Quiabbo/mosca-tee-editor</url>
+  <url type="vcs-browser">https://github.com/Quiabbo/mosca-tee-editor</url>
+
+  <categories>
+    <category>Graphics</category>
+    <category>2DGraphics</category>
+    <category>RasterGraphics</category>
+  </categories>
+
+  <keywords>
+    <keyword>design</keyword>
+    <keyword>graphics</keyword>
+    <keyword>editor</keyword>
+    <keyword>tshirt</keyword>
+    <keyword>apparel</keyword>
+  </keywords>
+
+  <icon type="remote">https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/v0.0.2/public/icon-512x512.png</icon>
+
+  <screenshots>
+    <screenshot type="default">
+      <caption>Editor — new document dialog</caption>
+      <caption xml:lang="pt_BR">Editor — diálogo de novo documento</caption>
+      <image>https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/v0.0.2/public/screen001.webp</image>
+    </screenshot>
+    <screenshot>
+      <caption>Layer styles and gradients</caption>
+      <caption xml:lang="pt_BR">Estilos de camada e gradientes</caption>
+      <image>https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/v0.0.2/public/screen002.webp</image>
+    </screenshot>
+    <screenshot>
+      <caption>Text tool and color picker</caption>
+      <caption xml:lang="pt_BR">Ferramenta de texto e seletor de cor</caption>
+      <image>https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/v0.0.2/public/screen003.webp</image>
+    </screenshot>
+    <screenshot>
+      <caption>Image library and PowerClip</caption>
+      <caption xml:lang="pt_BR">Biblioteca de imagens e PowerClip</caption>
+      <image>https://raw.githubusercontent.com/Quiabbo/mosca-tee-editor/v0.0.2/public/screen004.webp</image>
+    </screenshot>
+  </screenshots>
+
+  <releases>
+    <release version="0.0.2" date="2026-05-07">
+      <description>
+        <p>Initial release of Mosca Tee for Flathub.</p>
+        <p xml:lang="pt_BR">Lançamento inicial do Mosca Tee para Flathub.</p>
+      </description>
+    </release>
+  </releases>
+
+  <content_rating type="oars-1.1" />
+</component>
